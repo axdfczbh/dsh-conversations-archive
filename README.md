@@ -57,6 +57,23 @@ The plugin is not tied to one vendor — it recognises *tool calls*, not product
 
 To adapt another bridge, add a case to `lib/platform.mjs` (`recordsFromCall` / `recordsFromResult`). If its session directory differs, also extend `platformOf()` in `lib/privacy.mjs` (and the copies in `lib/extract.mjs` / `lib/platform.mjs`).
 
+### One extra step when SurfCore is present (QQ allow-list)
+
+Archive capture itself needs no permission — it only reads session logs. But **letting the QQ / Bilibili agent query the archive is a separate question**: SurfCore installs a tool guard (`qq-tool-restrict.mjs`) that lets those sessions *see* a tool and still refuse to *execute* it unless the name is allow-listed.
+
+Without this step they will see `search_conversations` and `archive_health`, and every call comes back rejected. Add both names to `SAFE_EXACT`:
+
+```js
+// surfcore/qq-tool-restrict.mjs
+const SAFE_EXACT = new Set([
+  // … existing entries …
+  'search_conversations',
+  'archive_health',
+])
+```
+
+Both are read-only: no local file access, no shell, no network writes. Then restart DSH (or wait for the preset module to reload) and the QQ / Bilibili side can search the archive.
+
 ### Settings
 
 | Setting | Default | Meaning |
@@ -151,6 +168,23 @@ dsh plugin add /绝对路径/dsh-conversations-archive
 **桥接对不上也不会坏。** 平台那部分记录不产生而已；对话本身照样完整进档案，标成 `source: "dsh"`——你丢的是平台视角，不是对话记录。
 
 要适配别的桥接，在 `lib/platform.mjs` 里加一个分支（`recordsFromCall` / `recordsFromResult`）；如果它的会话目录不一样，再把 `platformOf()` 补上（`lib/privacy.mjs`，以及 `lib/extract.mjs` / `lib/platform.mjs` 里的同名副本）。
+
+### 装了 SurfCore 的话，还差这一步（QQ 白名单）
+
+**收录本身不需要任何权限**——它只读会话日志。但「让 QQ / B站 那边的 agent 去查档案」是另一回事：SurfCore 装了一道工具闸门（`qq-tool-restrict.mjs`），那些会话能**看见**工具，名字不在白名单里就**拒绝执行**。
+
+不做这一步，她们会看见 `search_conversations` 和 `archive_health`，然后每次调用都被打回来。把两个名字加进 `SAFE_EXACT`：
+
+```js
+// surfcore/qq-tool-restrict.mjs
+const SAFE_EXACT = new Set([
+  // …原有的条目…
+  'search_conversations',
+  'archive_health',
+])
+```
+
+两个都是只读的：不碰本地文件、不开 shell、没有网络写操作。改完重启 DSH（或者等 preset 模块重新加载），QQ / B站 那边就能查了。
 
 ### 设置项
 
