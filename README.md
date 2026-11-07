@@ -39,6 +39,20 @@ dsh plugin add /absolute/path/to/dsh-conversations-archive
 
 Then open **Settings → Conversations Archive** and pick a directory. **Nothing is collected until a directory is chosen** — that is deliberate: the plugin must not write into a path you did not approve.
 
+### Platform support
+
+The plugin is not tied to one vendor — it recognises *tool calls*, not products. But that recognition is what decides whether QQ and Bilibili rows appear at all.
+
+| Source | Works out of the box? | What it needs |
+|---|---|---|
+| DSH sessions | **Yes** | Nothing. Every window is an ordinary session; all it needs is a readable session directory. |
+| QQ | Needs a matching bridge | Tool names from the SnowLuma QQ bridge: `qq_send_message`, `qq_send_private_message`, `qq_send_group_message`, `qq_reply`, `qq_send_sticker`, `qq_wait_for_messages`, `qq_get_unread_messages`, `qq_get_recent_messages`, `qq_get_message_images`, `qq_collect_sticker`, plus their JSON shapes. |
+| Bilibili | Needs SurfCore's `bili.mjs` | A session whose cwd is under `surfcore/state/bili-agents`, and publishing done through `pwsh` calls to `bili.mjs` (`daily` / `comment` / `dm` / `reply` / `share-dynamic`). |
+
+**If your bridge does not match, nothing breaks.** The platform-specific rows are simply not produced. The conversation itself is still archived in full with `source: "dsh"` — you lose the platform-side view, not the transcript.
+
+To adapt another bridge, add a case to `lib/platform.mjs` (`recordsFromCall` / `recordsFromResult`). If its session directory differs, also extend `platformOf()` in `lib/privacy.mjs` (and the copies in `lib/extract.mjs` / `lib/platform.mjs`).
+
 ### Settings
 
 | Setting | Default | Meaning |
@@ -119,6 +133,20 @@ dsh plugin add /绝对路径/dsh-conversations-archive
 ```
 
 然后打开 **设置 → 对话档案室**，先选一个存放目录。**在选定目录之前不会收录任何东西**——这是故意的，插件不该往你没批准过的路径里写文件。
+
+### 平台支持
+
+这个插件不绑定某一个产品——它识别的是**工具调用**。但识别得到与否，决定了 QQ 和 B站 那两部分记录会不会出现。
+
+| 来源 | 开箱可用？ | 需要什么 |
+|---|---|---|
+| DSH 会话 | **是** | 什么都不用。每个窗口都是普通会话，只要会话目录读得到。 |
+| QQ | 需要匹配的桥接 | SnowLuma QQ 桥接的工具名：`qq_send_message`、`qq_send_private_message`、`qq_send_group_message`、`qq_reply`、`qq_send_sticker`、`qq_wait_for_messages`、`qq_get_unread_messages`、`qq_get_recent_messages`、`qq_get_message_images`、`qq_collect_sticker`，以及它们返回的 JSON 结构。 |
+| B站 | 需要 SurfCore 的 `bili.mjs` | 会话 cwd 在 `surfcore/state/bili-agents` 下，并且发布/回复走的是 `pwsh` 调 `bili.mjs`（`daily` / `comment` / `dm` / `reply` / `share-dynamic`）。 |
+
+**桥接对不上也不会坏。** 平台那部分记录不产生而已；对话本身照样完整进档案，标成 `source: "dsh"`——你丢的是平台视角，不是对话记录。
+
+要适配别的桥接，在 `lib/platform.mjs` 里加一个分支（`recordsFromCall` / `recordsFromResult`）；如果它的会话目录不一样，再把 `platformOf()` 补上（`lib/privacy.mjs`，以及 `lib/extract.mjs` / `lib/platform.mjs` 里的同名副本）。
 
 ### 设置项
 
