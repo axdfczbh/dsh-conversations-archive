@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "对话档案室",
+    "description": "把 DSH、QQ、B站 的对话只追加地存成纯文本档案（路径由你自己选），并提供 search_conversations 按关键词和时间翻查旧对话。"
+  }
+}

@@ -1,0 +1,14 @@
+# 依赖
+node_modules/
+
+# 开发时会生成的预览/备份/调试产物
+out/
+backups/
+*.log
+*.bak
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

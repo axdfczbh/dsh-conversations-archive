@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Conversations Archive",
+    "description": "Append-only plain-text archive of DSH, QQ, and Bilibili conversations in a directory you choose, with a search_conversations tool for keyword and date lookup."
+  }
+}

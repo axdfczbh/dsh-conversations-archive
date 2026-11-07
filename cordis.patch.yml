@@ -1,0 +1,5 @@
+- insert:
+    - id: conversations-archive
+      name: dsh-conversations-archive
+      config:
+        autoBackfill: true
