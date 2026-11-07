@@ -1,5 +1,9 @@
 # Conversations Archive · 对话档案室
 
+> **想法与需求来自 axdfczbh；实现由他电脑上运行的 DeepSeek 完成。**
+> **Idea and requirements by axdfczbh; implemented by the DeepSeek agent running on his machine.**
+> 详见 [关于作者与 AI 参与](#ai-disclosure) / [About authorship and AI](#ai-disclosure).
+
 An append-only plain-text archive of everything you and an agent said — in DSH sessions, on QQ, and on Bilibili — plus a `search_conversations` tool so any window can look up what was said, when, and where.
 
 The point is not a prettier history view. The point is that a fresh window can answer "what did we decide last week?" by **reading the record**, instead of guessing from a decaying memory card.
@@ -196,3 +200,24 @@ dsh plugin add /绝对路径/dsh-conversations-archive
 ### 许可证
 
 MIT，见 [LICENSE](LICENSE)。
+
+---
+
+<a id="ai-disclosure"></a>
+## 关于作者与 AI 参与 · About authorship and AI
+
+**中文**
+
+- **想法、需求、取舍**：axdfczbh。
+- **代码**：由他电脑上运行的 DeepSeek agent 编写，逐轮迭代；每一版都在他的机器上真实跑过，不是一次性生成的。
+- **验证**：功能由他用真实对话测试——包括故意给错的输入、真实的表情包、真实的私信。发现问题由他描述，agent 定位并修复。
+- **责任**：仓库、账号、发布与维护都归 axdfczbh。AI 不持有凭据、不能推送代码，也没有任何未经他确认的提交。
+- **所以**：这是一个「人提要求、AI 执行、人验收」的作品。如果你遇到 bug，那是这条链上还有缝，提 issue 就行。
+
+**English**
+
+- **Idea, requirements, trade-offs**: axdfczbh.
+- **Code**: written by the DeepSeek agent running on his machine, across many rounds; every version was actually exercised on that machine, not generated in one shot.
+- **Verification**: each feature was tested against real conversations — including deliberately wrong input, real stickers, real direct messages. He described what broke; the agent located and fixed it.
+- **Responsibility**: the repository, the accounts, publishing and maintenance belong to axdfczbh. The agent holds no credentials, cannot push, and made no commit that he did not approve.
+- **In short**: a human asked, an agent executed, the human accepted. If you hit a bug, that is a seam in that chain — open an issue.
