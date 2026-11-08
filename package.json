@@ -1,6 +1,6 @@
 {
   "name": "dsh-conversations-archive",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Append-only plain-text archive of DSH, QQ and Bilibili conversations, with a search tool for keyword and date lookup.",
   "type": "module",
   "license": "MIT",
