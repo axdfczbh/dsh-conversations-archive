@@ -166,11 +166,41 @@ export function apply(ctx, config) {
         req.on('error', reject)
       })
 
+    // 宿主认证：这三个接口都要经过 connection 准入，未认证一律拒绝。
+    // 认证不可用（没有 connection 服务、或调用抛错）时同样拒绝，不做降级放行。
+    const requireAdmission = (req, res) => {
+      let connection
+      try {
+        connection = ctx.get('connection')
+      } catch (error) {
+        connection = undefined
+      }
+      if (!connection || typeof connection.admit !== 'function') {
+        json(res, 503, { ok: false, error: '宿主认证不可用，请求已拒绝' })
+        return false
+      }
+      let admission
+      try {
+        admission = connection.admit(req)
+      } catch (error) {
+        json(res, 503, { ok: false, error: `宿主认证失败：${error?.message ?? error}` })
+        return false
+      }
+      if (admission && typeof admission.rejection === 'number') {
+        json(res, admission.rejection, { ok: false, error: '未通过宿主认证的请求' })
+        return false
+      }
+      return true
+    }
+
     ctx.effect(() =>
       webServer.register({
         kind: 'exact',
         path: '/api/conversations-archive/status',
-        handler: (_req, res) => json(res, 200, status),
+        handler: (req, res) => {
+          if (!requireAdmission(req, res)) return
+          return json(res, 200, status)
+        },
       }),
     )
 
@@ -179,6 +209,7 @@ export function apply(ctx, config) {
         kind: 'exact',
         path: '/api/conversations-archive/settings',
         handler: async (req, res) => {
+          if (!requireAdmission(req, res)) return
           if (req.method !== 'POST') return json(res, 405, { ok: false, error: '只接受 POST' })
           try {
             const body = await readBody(req)
@@ -224,6 +255,7 @@ export function apply(ctx, config) {
         kind: 'exact',
         path: '/api/conversations-archive/purge',
         handler: async (req, res) => {
+          if (!requireAdmission(req, res)) return
           if (req.method !== 'POST') return json(res, 405, { ok: false, error: '只接受 POST' })
           try {
             const body = await readBody(req)

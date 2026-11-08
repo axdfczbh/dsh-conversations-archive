@@ -100,6 +100,7 @@ Both degrade silently: if the surrounding text stops matching, the message is pa
 - `private` rows are DSH conversations and QQ private chats. They are returned in full only when the caller is the owner — determined structurally (session cwd + the QQ conversation key in the wake prompt), not by asking the model.
 - From a group or Bilibili caller, private rows come back as time + "content withheld". The model never receives the text, so it cannot leak it.
 - Owner QQ id and Bilibili UID are empty by default; set them in `~/.dsh/conversations-archive/settings.json`.
+- Every plugin HTTP endpoint (`/api/conversations-archive/*`) passes through the host's `connection` admission. Unauthenticated requests are rejected with 401/403, and if admission is unavailable the request is refused with 503. Changing the archive directory or purging media requires an authenticated browser or API peer.
 
 ### The archive format
 
@@ -213,6 +214,7 @@ const SAFE_EXACT = new Set([
 - 「谁在问」由结构判断：会话的工作目录，加上 QQ 唤醒提示里的会话 key，**不靠模型自报**。
 - 从群或 B站 这类公开场调用时，私事条目只返回时间和「内容不展示」；正文在程序里就被截掉，模型手里根本没有。
 - 主人的 QQ 号和 B站 UID 默认留空，需要时写进 `~/.dsh/conversations-archive/settings.json`。
+- 插件的 HTTP 接口（`/api/conversations-archive/*`）统一经过宿主的 connection 准入：未认证请求直接拒绝（401/403），准入不可用时也拒绝（503）。改档案目录、清理媒体这类写操作，必须来自已认证的浏览器或 API peer。
 
 ### 档案格式
 
