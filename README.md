@@ -243,6 +243,7 @@ MIT，见 [LICENSE](LICENSE)。
 **中文**
 
 - **想法、需求、取舍**：axdfczbh。
+- **图标**：由 axdfczbh 提供的角色立绘压平、描线而来（不是借用别人的作品）。
 - **代码**：由他电脑上运行的 DeepSeek agent 编写，逐轮迭代；每一版都在他的机器上真实跑过，不是一次性生成的。
 - **验证**：功能由他用真实对话测试——包括故意给错的输入、真实的表情包、真实的私信。发现问题由他描述，agent 定位并修复。
 - **责任**：仓库、账号、发布与维护都归 axdfczbh。AI 不持有凭据、不能推送代码，也没有任何未经他确认的提交。
@@ -251,6 +252,7 @@ MIT，见 [LICENSE](LICENSE)。
 **English**
 
 - **Idea, requirements, trade-offs**: axdfczbh.
+- **Icon**: flattened and re-drawn from the character illustration provided by axdfczbh.
 - **Code**: written by the DeepSeek agent running on his machine, across many rounds; every version was actually exercised on that machine, not generated in one shot.
 - **Verification**: each feature was tested against real conversations — including deliberately wrong input, real stickers, real direct messages. He described what broke; the agent located and fixed it.
 - **Responsibility**: the repository, the accounts, publishing and maintenance belong to axdfczbh. The agent holds no credentials, cannot push, and made no commit that he did not approve.
